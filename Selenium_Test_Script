@@ -1,0 +1,136 @@
+package jan13frugal.jan13frugal;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.io.File;
+import java.io.IOException;
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
+
+public class swag {
+
+    public static void main(String args[]) throws IOException {
+
+        WebDriver driver=new ChromeDriver();
+        driver.manage().window().maximize();
+        Actions action=new Actions(driver);
+
+        File screenShotFile=((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        screenShotFile=((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+
+        driver.get("https://www.saucedemo.com/");
+        screenShotFile=((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        FileUtils.copyFile(screenShotFile,new File(".//screenshot//scr1.png"));
+
+        driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+
+        //verifying the title of the page
+        String pageTitle= driver.getTitle();
+        System.out.println(pageTitle);
+        String pageURL = driver.getCurrentUrl();
+        screenShotFile=((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        FileUtils.copyFile(screenShotFile,new File(".//screenshot//scr2.png"));
+        if(pageTitle.equals("Swag Labs"))
+        {
+            System.out.println("Welcome Swag Labs Shopping page");
+        }
+        else
+        {
+            System.out.println("You are on the Wrong Page");
+        }
+        //user id
+        WebElement username= driver.findElement(By.xpath("//*[@id='user-name']"));
+        username.sendKeys("standard_user");
+        screenShotFile=((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        FileUtils.copyFile(screenShotFile,new File(".//screenshot//scr3.png"));
+
+        //password
+        WebElement password=driver.findElement(By.xpath("//*[@id='password']"));
+        password.sendKeys("secret_sauce");
+        screenShotFile=((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        FileUtils.copyFile(screenShotFile,new File(".//screenshot//scr4.png"));
+
+        //click on the login button
+        WebElement login=driver.findElement(By.xpath("//*[@id='login-button']"));
+        login.click();
+        screenShotFile=((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        FileUtils.copyFile(screenShotFile,new File(".//screenshot//scr5.png"));
+
+        //select the item and add to the cart
+        WebElement item1=driver.findElement(By.xpath("//*[@name='add-to-cart-sauce-labs-backpack']"));
+        item1.click();
+        screenShotFile=((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        FileUtils.copyFile(screenShotFile,new File(".//screenshot//scr6.png"));
+
+        //Moving to the cart
+        WebElement cart= driver.findElement(By.xpath("//*[@id='shopping_cart_container']"));
+        action.moveToElement(cart).click().build().perform();
+        screenShotFile=((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        FileUtils.copyFile(screenShotFile,new File(".//screenshot//scr7.png"));
+
+        //verifying the items from the cart that we have added
+        WebElement cartItem= driver.findElement(By.className("inventory_item_name"));
+        String expectedText = cartItem.getText();
+        String actualText="Sauce Labs Backpack";
+        if(expectedText.equals(actualText))
+        {
+            System.out.println("The item is added to the cart");
+        }
+        else
+        {
+              System.out.println("item not added in the cart");
+        }
+
+        //check out button
+        WebElement checkout=driver.findElement(By.id("checkout"));
+        checkout.click();
+        screenShotFile=((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        FileUtils.copyFile(screenShotFile,new File(".//screenshot//scr8.png"));
+
+        //Details form
+        WebElement firstName=driver.findElement(By.id("first-name"));
+        firstName.sendKeys("Test");
+        screenShotFile=((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        FileUtils.copyFile(screenShotFile,new File(".//screenshot//scr9.png"));
+
+        WebElement lastName=driver.findElement(By.id("last-name"));
+        lastName.sendKeys("User");
+        screenShotFile=((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        FileUtils.copyFile(screenShotFile,new File(".//screenshot//scr10.png"));
+
+        WebElement pincode=driver.findElement(By.name("postalCode"));
+        pincode.sendKeys("12345");
+        screenShotFile=((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        FileUtils.copyFile(screenShotFile,new File(".//screenshot//scr11.png"));
+
+        WebElement cont=driver.findElement(By.name("continue"));
+        cont.click();
+        screenShotFile=((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        FileUtils.copyFile(screenShotFile,new File(".//screenshot//scr12.png"));
+
+        //finish
+        WebElement finish=driver.findElement(By.xpath("//button[@id='finish']"));
+        finish.click();
+        screenShotFile=((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        FileUtils.copyFile(screenShotFile,new File(".//screenshot//scr13.png"));
+
+        //verify that the order has been confirmed
+        WebElement orderConfirm=driver.findElement(By.xpath("//h2[@class='complete-header']"));
+        screenShotFile=((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        FileUtils.copyFile(screenShotFile,new File(".//screenshot//scr14.png"));
+        String expectedResult=orderConfirm.getText();
+        String actualResult="Thank you for your order!";
+        if(expectedResult.equals(actualResult))
+        {
+            System.out.println("Thanks for the order your order has been confirmed");
+        }
+        else
+        {
+            System.out.println("Sorry to say your order is nor confirmed");
+        }
+    }
+}
